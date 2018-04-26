@@ -1,6 +1,10 @@
-const express = require('express');
-const app = express();
+const express = require('express'),
+	app = express(),
+	mongoose = require('mongoose');
 
+
+mongoose.connect('mongodb://localhost/yelp_camp');
+app.use(express.urlencoded());
 app.set('view engine', 'ejs');
 
 const campgrounds = [
@@ -14,8 +18,6 @@ const campgrounds = [
 		name: 'Mountain Goat\'s Rest', 
 		image: 'https://images.unsplash.com/photo-1470246973918-29a93221c455?ixlib=rb-0.3.5&s=818083f99e9b291ad60959b2594d97f3&dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb'}
 ];
-
-app.use(express.urlencoded());
 
 app.get('/', (req, res) => {
 	res.render('landing');
