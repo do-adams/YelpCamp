@@ -3,9 +3,11 @@
 const express = require('express'),
 	app = express(),
 	mongoose = require('mongoose'),
-	Campground = require('./models/campground');
+	Campground = require('./models/campground'),
+	seedDB = require('./seeds');
 
 mongoose.connect('mongodb://localhost/yelp_camp');
+seedDB();
 
 app.use(express.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
