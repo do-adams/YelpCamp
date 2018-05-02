@@ -2,6 +2,7 @@
 
 const express = require('express'),
 	app = express(),
+	path = require('path'),
 	mongoose = require('mongoose'),
 	Campground = require('./models/campground'),
 	Comment = require('./models/comment'),
@@ -12,6 +13,9 @@ seedDB();
 
 app.use(express.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
+
+const publicPath = path.resolve(__dirname, 'public');
+app.use(express.static(publicPath));
 
 app.get('/', (req, res) => {
 	res.render('landing');
