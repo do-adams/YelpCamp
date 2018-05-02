@@ -4,6 +4,7 @@ const express = require('express'),
 	app = express(),
 	mongoose = require('mongoose'),
 	Campground = require('./models/campground'),
+	Comment = require('./models/comment'),
 	seedDB = require('./seeds');
 
 mongoose.connect('mongodb://localhost/yelp_camp');
@@ -18,8 +19,11 @@ app.get('/', (req, res) => {
 
 app.get('/campgrounds', (req, res) => {
 	Campground.find({}, function(err, campgrounds) {
-		if (err) console.log(err);
-		else res.render('campgrounds/index', {campgrounds: campgrounds});
+		if (err) { 
+			console.log(err);
+		} else { 
+			res.render('campgrounds/index', {campgrounds: campgrounds});
+		}
 	});
 });
 
@@ -47,8 +51,7 @@ app.get('/campgrounds/:id', (req, res) => {
 	Campground.findById(req.params.id).populate('comments').exec(function(err, foundCampground) {
 		if (err) { 
 			console.log(err); 
-		}	
-		else { 
+		}	else { 
 			console.log(foundCampground);
 			res.render('campgrounds/show', {campground: foundCampground});
 		}
@@ -63,9 +66,27 @@ app.get('/campgrounds/:id/comments/new', (req, res) => {
 	Campground.findById(req.params.id, function(err, campground) {
 		if (err) {
 			console.log(err);
-		}
-		else { 
+		} else { 
 			res.render('comments/new', {campground: campground});
+		}
+	});
+});
+
+app.post('/campgrounds/:id/comments', (req, res) => {
+	Campground.findById(req.params.id, function(err, campground) {
+		if (err) {
+			console.log(err);
+			res.redirect('/campgrounds');
+		} else {
+			Comment.create(req.body.comment, function(err, comment) {
+				if (err) {
+					console.log(err);
+				} else {
+					campground.comments.push(comment);
+					campground.save();
+					res.redirect('/campgrounds/' + campground._id);
+				}
+			});
 		}
 	});
 });
