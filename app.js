@@ -4,6 +4,7 @@ const express = require('express'),
 	app = express(),
 	path = require('path'),
 	mongoose = require('mongoose'),
+	session = require('express-session'),
 	passport = require('passport'),
 	Campground = require('./models/campground'),
 	Comment = require('./models/comment'),
@@ -13,11 +14,25 @@ const express = require('express'),
 mongoose.connect('mongodb://localhost/yelp_camp');
 seedDB();
 
-app.use(express.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 
 const publicPath = path.resolve(__dirname, 'public');
 app.use(express.static(publicPath));
+app.use(express.urlencoded({extended: true}));
+
+// PASSPORT CONFIGURATION
+
+app.use(session({
+	secret: 'This should definitely not be here',
+	resave: false,
+	saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.get('/', (req, res) => {
 	res.render('landing');
@@ -95,6 +110,28 @@ app.post('/campgrounds/:id/comments', (req, res) => {
 			});
 		}
 	});
+});
+
+// ===================
+// AUTH ROUTES
+// ===================
+
+app.get('/register', (req, res) => {
+	res.render('register');
+});
+
+app.post('/register', (req, res) => {
+	User.register(new User({username: req.body.username}), 
+		req.body.password, function(err, user) {
+			if (err) {
+				console.log(err);
+				return res.render('register');
+			} else {
+				passport.authenticate('local')(req, res, function() {
+					res.redirect('/campgrounds');
+				});
+			}
+		});
 });
 
 app.listen(3000, () => 
