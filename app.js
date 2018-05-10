@@ -4,8 +4,10 @@ const express = require('express'),
 	app = express(),
 	path = require('path'),
 	mongoose = require('mongoose'),
+	passport = require('passport'),
 	Campground = require('./models/campground'),
 	Comment = require('./models/comment'),
+	User = require('./models/user'),
 	seedDB = require('./seeds');
 
 mongoose.connect('mongodb://localhost/yelp_camp');
