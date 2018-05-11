@@ -3,7 +3,7 @@ const router = express.Router();
 
 const Campground = require('../models/campground');
 
-router.get('/campgrounds', (req, res) => {
+router.get('/', (req, res) => {
 	Campground.find({}, function(err, campgrounds) {
 		if (err) { 
 			console.log(err);
@@ -13,7 +13,7 @@ router.get('/campgrounds', (req, res) => {
 	});
 });
 
-router.post('/campgrounds', (req, res) => {
+router.post('/', (req, res) => {
 	const name = req.body.name,
 		image = req.body.image, 
 		desc = req.body.description;
@@ -29,11 +29,11 @@ router.post('/campgrounds', (req, res) => {
 	});
 });
 
-router.get('/campgrounds/new', (req, res) => {
+router.get('/new', (req, res) => {
 	res.render('campgrounds/new');
 });
 
-router.get('/campgrounds/:id', (req, res) => {
+router.get('/:id', (req, res) => {
 	Campground.findById(req.params.id).populate('comments').exec(function(err, foundCampground) {
 		if (err) { 
 			console.log(err); 
