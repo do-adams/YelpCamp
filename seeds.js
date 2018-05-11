@@ -49,6 +49,13 @@ function seedDB() {
 					console.log('Created user!');
 					
 					data.forEach(seed => {
+						
+						// Add reference to our author for the campgrounds
+						seed.author = {
+							id: user._id,
+							username: user.username
+						};
+
 						Campground.create(seed, function(err, campground){
 							if(err){
 								console.log(err)
