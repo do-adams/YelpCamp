@@ -34,6 +34,12 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Middleware for passing user info to the views
+app.use((req, res, next) => {
+	res.locals.currentUser = req.user;
+	return next();
+});
+
 app.get('/', (req, res) => {
 	res.render('landing');
 });
