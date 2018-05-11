@@ -6,8 +6,6 @@ const express = require('express'),
 	mongoose = require('mongoose'),
 	session = require('express-session'),
 	passport = require('passport'),
-	Campground = require('./models/campground'),
-	Comment = require('./models/comment'),
 	User = require('./models/user'),
 	seedDB = require('./seeds');
 
