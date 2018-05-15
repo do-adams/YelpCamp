@@ -4,6 +4,8 @@ const router = express.Router({mergeParams: true});
 const Campground = require('../models/campground'),
 	Comment = require('../models/comment');
 
+// NEW AND CREATE ROUTES
+
 router.get('/new', isLoggedIn, (req, res) => {
 	Campground.findById(req.params.id, function(err, campground) {
 		if (err) {
@@ -36,6 +38,33 @@ router.post('/', isLoggedIn, (req, res) => {
 		}
 	});
 });
+
+// EDIT AND UPDATE ROUTES
+
+router.get('/:comment_id/edit', (req, res) => {
+	Comment.findById(req.params.comment_id, function(err, foundComment) {
+		if (err) {
+			res.redirect('back');
+		} else {
+			res.render('comments/edit', 
+			{
+				campground_id: req.params.id,
+				comment: foundComment
+			});
+		}
+	});
+});
+
+router.put('/:comment_id', (req, res) => {
+	Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
+		if (err) {
+			res.redirect('back');
+		} else {
+			res.redirect('/campgrounds/' + req.params.id);
+		}
+	});
+});
+
 
 function isLoggedIn(req, res, next) {
 	if (req.isAuthenticated()) {
