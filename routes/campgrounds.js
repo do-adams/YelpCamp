@@ -3,6 +3,8 @@ const router = express.Router();
 
 const Campground = require('../models/campground');
 
+// INDEX AND CREATE ROUTES
+
 router.get('/', (req, res) => {
 	Campground.find({}, function(err, campgrounds) {
 		if (err) { 
@@ -41,6 +43,8 @@ router.get('/new', isLoggedIn, (req, res) => {
 	res.render('campgrounds/new');
 });
 
+// SHOW ROUTE
+
 router.get('/:id', (req, res) => {
 	Campground.findById(req.params.id).populate('comments').exec(function(err, foundCampground) {
 		if (err) { 
@@ -50,6 +54,8 @@ router.get('/:id', (req, res) => {
 		}
 	});
 });
+
+// UPDATE ROUTES
 
 router.get('/:id/edit', (req, res) => {
 	Campground.findById(req.params.id, function(err, foundCampground) {
@@ -70,6 +76,19 @@ router.put('/:id', (req, res) => {
 		}
 	});
 });
+
+// DESTROY ROUTE
+
+router.delete('/:id', (req, res) => {
+	Campground.findByIdAndRemove(req.params.id, function(err) {
+		if (err) {
+			res.redirect('/campgrounds');
+		} else {
+			res.redirect('/campgrounds');
+		}
+	});
+});
+
 
 function isLoggedIn(req, res, next) {
 	if (req.isAuthenticated()) {
