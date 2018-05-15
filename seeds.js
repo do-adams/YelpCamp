@@ -1,7 +1,9 @@
+'use strict';
+
 const mongoose = require('mongoose'), 
-Campground = require('./models/campground'),
-Comment = require('./models/comment'),
-User = require('./models/user');
+	Campground = require('./models/campground'),
+	Comment = require('./models/comment'),
+	User = require('./models/user');
 
 const data = [
 	{
@@ -22,46 +24,50 @@ const data = [
 ]
 
 function seedDB() {
-	//Remove all campgrounds
+	// Remove all campgrounds
 	Campground.remove({}, function(err){
-		if(err){
+		if (err) {
 			console.log(err);
 		}
 		console.log('removed campgrounds!');
 		
+		// Remove all comments
 		Comment.remove({}, function(err) {
-			if(err){
+			if (err) {
 				console.log(err);
 			}
 			console.log('removed comments!');
-			//add a few campgrounds
 			
+			// Remove all users
 			User.remove({}, function(err) {
-				if(err) {
+				if (err) {
 					console.log(err);
 				}
 				console.log('removed users!');
 				
-				User.register(new User({username: 'Homer'}), 'password', function(err, user) {
-					if(err) {
+				// Create the admin user
+				User.register(new User({username: 'Admin'}), 'root', function(err, user) {
+					if (err) {
 						console.log(err);
 					} 
 					console.log('Created user!');
 					
+					// Create the campgrounds
 					data.forEach(seed => {
 						
-						// Add reference to our author for the campgrounds
+						// Add reference to our admin author for the campgrounds
 						seed.author = {
 							id: user._id,
 							username: user.username
 						};
 
 						Campground.create(seed, function(err, campground){
-							if(err){
+							if (err) {
 								console.log(err)
 							} else {
 								console.log('added a campground');
-								//create a comment
+								
+								// Create and add a comment
 								Comment.create(
 									{
 										text: 'This place is great, but I wish there was internet',
@@ -85,7 +91,6 @@ function seedDB() {
 				});
 			});
 		}); 
-		//add a few comments
 	}
 	
 	module.exports = seedDB;
