@@ -6,6 +6,7 @@ const express = require('express'),
 	mongoose = require('mongoose'),
 	session = require('express-session'),
 	passport = require('passport'),
+	methodOverride = require('method-override'),
 	User = require('./models/user'),
 	seedDB = require('./seeds');
 
@@ -23,6 +24,7 @@ app.set('view engine', 'ejs');
 const publicPath = path.resolve(__dirname, 'public');
 app.use(express.static(publicPath));
 app.use(express.urlencoded({extended: true}));
+app.use(methodOverride('_method'));
 
 // PASSPORT CONFIGURATION
 
