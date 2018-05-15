@@ -3,7 +3,8 @@
 const express = require('express');
 const router = express.Router();
 
-const Campground = require('../models/campground');
+const Campground = require('../models/campground'),
+	Comment = require('../models/comment');
 const middleware = require('../middleware');
 
 // INDEX AND CREATE ROUTES
@@ -83,10 +84,18 @@ router.put('/:id', middleware.checkCampgroundOwnership, (req, res) => {
 // DESTROY ROUTE
 
 router.delete('/:id', middleware.checkCampgroundOwnership, (req, res) => {
-	Campground.findByIdAndRemove(req.params.id, function(err) {
+	Campground.findByIdAndRemove(req.params.id, function(err, foundCampground) {
 		if (err) {
 			res.redirect('/campgrounds');
 		} else {
+			// Delete campground comments
+			foundCampground.comments.forEach(id => {
+				Comment.findByIdAndRemove(id, function(err) {
+					if (err) {
+						console.error(err);
+					}
+				});
+			});
 			res.redirect('/campgrounds');
 		}
 	});
