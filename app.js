@@ -5,6 +5,7 @@ const express = require('express'),
 	path = require('path'),
 	mongoose = require('mongoose'),
 	session = require('express-session'),
+	flash = require('connect-flash'),
 	passport = require('passport'),
 	methodOverride = require('method-override'),
 	User = require('./models/user'),
@@ -26,14 +27,15 @@ app.use(express.static(publicPath));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 
-// PASSPORT CONFIGURATION
-
 app.use(session({
 	secret: 'This should definitely not be here',
 	resave: false,
 	saveUninitialized: false
 }));
 
+app.use(flash());
+
+// PASSPORT CONFIGURATION
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(User.createStrategy());
