@@ -1,8 +1,8 @@
 'use strict';
 
-const express = require('express'),
+const path = require('path'),
+	express = require('express'),
 	app = express(),
-	path = require('path'),
 	mongoose = require('mongoose'),
 	session = require('express-session'),
 	flash = require('connect-flash'),
@@ -28,7 +28,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 
 app.use(session({
-	secret: 'This should definitely not be here',
+	secret: 'This string should definitely not be here',
 	resave: false,
 	saveUninitialized: false
 }));
@@ -53,6 +53,15 @@ app.use((req, res, next) => {
 app.use('/', indexRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
+
+// Error-handling middleware
+app.use((err, req, res, next) => {
+	console.error(err);
+	console.error(err.stack);
+	req.flash('error', err.message);
+	res.status('500');
+	res.redirect('back');
+});
 
 app.listen(3000, () => 
 	console.log('The YelpCamp Server has started!'));

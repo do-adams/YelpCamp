@@ -9,8 +9,9 @@ module.exports = {
 		if (req.isAuthenticated()) {
 			Campground.findById(req.params.id, function(err, foundCampground) {
 				if (err) {
-					req.flash('error', 'Campground not found');
-					res.redirect('back');
+					return next(err);
+				} else if (!foundCampground) {
+					return next(new Error('Could not find Campground'));
 				} else {
 					if (foundCampground.author.id.equals(req.user._id)) {
 						return next();
@@ -30,7 +31,9 @@ module.exports = {
 		if (req.isAuthenticated()) {
 			Comment.findById(req.params.comment_id, function(err, foundComment) {
 				if (err) {
-					res.redirect('back');
+					return next(err);
+				} else if (!foundComment) {
+					return next(new Error('Could not find Comment'));
 				} else {
 					if (foundComment.author.id.equals(req.user._id)) {
 						return next();
