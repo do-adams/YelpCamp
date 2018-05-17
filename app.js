@@ -11,6 +11,9 @@ const path = require('path'),
 	User = require('./models/user'),
 	seedDB = require('./seeds');
 
+// Enable async stack trace logging (not for production use)
+require('longjohn');
+
 // Requiring Routes
 const indexRoutes = require('./routes/index'),
 	campgroundRoutes = require('./routes/campgrounds'),
