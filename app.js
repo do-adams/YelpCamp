@@ -57,6 +57,11 @@ app.use('/', indexRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
 
+// 404 Middleware
+app.use((req, res) => {
+	res.status(404).send('404: Page not found!');
+});
+
 // Error-handling middleware
 app.use((err, req, res, next) => {
 	console.error(err);
