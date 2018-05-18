@@ -23,11 +23,13 @@ router.get('/', (req, res, next) => {
 
 router.post('/', middleware.isLoggedIn, (req, res, next) => {
 	const name = req.body.name,
+		price = req.body.price,
 		image = req.body.image, 
 		desc = req.body.description;
 
 	const newCampground = {
 		name: name, 
+		price: price,
 		image: image, 
 		description: desc,
 		author: {
