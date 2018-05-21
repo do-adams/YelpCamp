@@ -1,8 +1,18 @@
 # YelpCamp
 
-YelpCamp is a full-stack web application built with Node.js, Express, and MongoDb or what is known as the MEN stack. It is a simple Yelp clone and was a fun learning exercise from one of Colt Steele's web development courses on [Udemy](https://www.udemy.com/the-web-developer-bootcamp/learn/v4/overview).
+YelpCamp is a full-stack web application built with Node.js, Express, and MongoDb or what is known as the MEN stack. It is a simple Yelp clone for campers and was a fun learning exercise from one of Colt Steele's web development courses on [Udemy](https://www.udemy.com/the-web-developer-bootcamp/learn/v4/overview).
 
-I added a few improvements of my own such as `dotenv` for environment variables, `connect-mongo` for MongoDb session storage, `longjohn` for async stack trace debugging, and a couple of more goodies such as 404 and error-handling middleware. I also did my best to follow the AirBnB JavaScript style guide for the codebase.
+The web app allows visitors to:
+* Sign Up
+* Login
+* Browse Campgrounds
+* Create Campgrounds
+* Edit Campgrounds
+* Delete Campgrounds
+* Comment on Campgrounds
+* Edit Comments
+
+I added a few improvements of my own such as [`dotenv`](https://www.npmjs.com/package/dotenv) for environment variables, [`connect-mongo`](https://github.com/jdesboeufs/connect-mongo) for MongoDb session storage, [`longjohn`](https://github.com/mattinsler/longjohn) for async stack trace debugging, and a couple of more goodies such as 404 and error-handling middleware. I also did my best to follow the AirBnB JavaScript style [guide](https://github.com/airbnb/javascript) for the codebase.
 
 ### Code Features
 
@@ -37,6 +47,7 @@ YelpCamp uses the `dotenv` Node module so you can create a `.env` file with the 
 
 ```
 NODE_ENV=<node_environment>
+DATABASE_URL=<connection_string_for_mongo_db>
 SESSION_SECRET=<key_for_encrypting_session_cookies>
 PORT=<port_number>
 ```
