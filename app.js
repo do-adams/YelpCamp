@@ -22,7 +22,7 @@ const path = require('path'),
 // DB SETUP
 const mongoUrl = process.env.DATABASE_URL || 'mongodb://localhost/yelp_camp';
 mongoose.connect(mongoUrl);
-seedDB();
+if (process.env.NODE_ENV !== 'production') seedDB();
 
 app.set('view engine', 'ejs');
 
