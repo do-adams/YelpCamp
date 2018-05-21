@@ -2,7 +2,7 @@
 
 YelpCamp is a full-stack web application built with Node.js, Express, and MongoDb or what is known as the MEN stack. It is a simple Yelp clone for campers and was a fun learning exercise from one of Colt Steele's web development courses on [Udemy](https://www.udemy.com/the-web-developer-bootcamp/learn/v4/overview).
 
-The web app allows visitors to:
+The responsive web app allows visitors to:
 * Sign Up
 * Login
 * Browse Campgrounds
@@ -39,7 +39,7 @@ YelpCamp works out of the box. You, of course, need to have both Node.js and Mon
 5. Run `npm start`
 6. Open a browser window and visit `http://localhost:3000/`
 
-### Environment Variables
+##### Environment Variables
 
 If you actually want to deploy this somewhere (why?), you can easily do so by configuring the following environment variables. 
 
