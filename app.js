@@ -12,6 +12,7 @@ const path = require('path'),
 	app = express(),
 	mongoose = require('mongoose'),
 	session = require('express-session'),
+	MongoStore = require('connect-mongo')(session),
 	flash = require('connect-flash'),
 	passport = require('passport'),
 	methodOverride = require('method-override'),
@@ -31,10 +32,17 @@ app.use(express.static(publicPath));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 
+// EXPRESS SESSION AND MONGOSTORE SETUP
 app.use(session({
+	store: new MongoStore({
+		url: mongoUrl
+	}),
 	secret: process.env.SESSION_SECRET || 'SUPER SECRET DEVELOPMENT KEY',
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
+	cookie: {
+		maxAge: 1000 * 60 * 60 * 24 * 7 * 2
+	}
 }));
 app.use(flash());
 
@@ -69,7 +77,6 @@ app.use((req, res) => {
 
 // ERROR HANDLER MIDDLEWARE
 app.use((err, req, res, next) => {
-	console.error(err);
 	console.error(err.stack);
 	req.flash('error', err.message);
 	res.status(500);
