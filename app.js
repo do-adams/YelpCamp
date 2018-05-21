@@ -1,5 +1,12 @@
 'use strict';
 
+// ENVIRONMENT VARIABLES SETUP
+require('dotenv').config();
+
+// ASYNC STACK TRACES DEBUG SETUP
+if (process.env.NODE_ENV !== 'production') require('longjohn');
+
+// GENERAL DEPENDENCIES
 const path = require('path'),
 	express = require('express'),
 	app = express(),
@@ -11,31 +18,24 @@ const path = require('path'),
 	User = require('./models/user'),
 	seedDB = require('./seeds');
 
-// Enable async stack trace logging (not for production use)
-require('longjohn');
-
-// Requiring Routes
-const indexRoutes = require('./routes/index'),
-	campgroundRoutes = require('./routes/campgrounds'),
-	commentRoutes = require('./routes/comments');
-	
-
-mongoose.connect('mongodb://localhost/yelp_camp');
+// DB SETUP
+const mongoUrl = process.env.DATABASE_URL || 'mongodb://localhost/yelp_camp';
+mongoose.connect(mongoUrl);
 seedDB();
 
 app.set('view engine', 'ejs');
 
+// GENERAL EXPRESS MIDDLEWARE SETUP
 const publicPath = path.resolve(__dirname, 'public');
 app.use(express.static(publicPath));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 
 app.use(session({
-	secret: 'This string should definitely not be here',
+	secret: process.env.SESSION_SECRET || 'SUPER SECRET DEVELOPMENT KEY',
 	resave: false,
 	saveUninitialized: false
 }));
-
 app.use(flash());
 
 // PASSPORT CONFIGURATION
@@ -45,7 +45,7 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Sends user session info to views
+// SET LOCAL VARS FOR TEMPLATE VIEWS
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
 	res.locals.error = req.flash('error');
@@ -53,16 +53,21 @@ app.use((req, res, next) => {
 	return next();
 });
 
+// SETUP ROUTERS
+const indexRoutes = require('./routes/index'),
+	campgroundRoutes = require('./routes/campgrounds'),
+	commentRoutes = require('./routes/comments');
+
 app.use('/', indexRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
 
-// 404 Middleware
+// 404 MIDDLEWARE
 app.use((req, res) => {
 	res.status(404).send('404: Page not found!');
 });
 
-// Error-handling middleware
+// ERROR HANDLER MIDDLEWARE
 app.use((err, req, res, next) => {
 	console.error(err);
 	console.error(err.stack);
@@ -71,5 +76,5 @@ app.use((err, req, res, next) => {
 	res.redirect('back');
 });
 
-app.listen(3000, () => 
+app.listen(process.env.PORT || 3000, () => 
 	console.log('The YelpCamp Server has started!'));
