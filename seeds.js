@@ -49,7 +49,7 @@ function seedDB() {
 				console.log('removed users!');
 				
 				// Create the admin user
-				User.register(new User({username: 'Admin'}), 'root', function(err, user) {
+				User.register(new User({username: 'admin'}), 'root', function(err, user) {
 					if (err) {
 						console.log(err);
 					} 
