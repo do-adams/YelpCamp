@@ -2,7 +2,7 @@
 
 ![Yelp Camp Collage](/YelpCamp_Collage.jpg "YelpCamp Collage")
 
-YelpCamp is a full-stack web application built with Node.js, Express, and MongoDb or what is known as the MEN stack. It is a simple Yelp clone for campers and was a fun learning exercise from one of Colt Steele's web development courses on [Udemy](https://www.udemy.com/the-web-developer-bootcamp/learn/v4/overview).
+YelpCamp is a full-stack web application built with Node.js, Express, and MongoDb or what is known as the MEN stack. It is a simple Yelp clone for campers and a fun learning exercise from one of Colt Steele's web development courses on [Udemy](https://www.udemy.com/the-web-developer-bootcamp/learn/v4/overview).
 
 The responsive web app allows visitors to:
 * Sign Up
